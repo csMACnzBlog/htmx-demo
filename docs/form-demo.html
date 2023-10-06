@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <title>Form - HTMX Demo - csMACnz</title>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    </head>
+    <body class="container">
+        <h1>Dynamic Form</h1>
+<p>
+    This page contains a form demo, scrolled down the page so we can see the (lack of) page refresh functionality.
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    A Little bit more...
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    That should be enough space.
+</p>
+        <div
+            hx-get="form-demo-reset.html"
+            hx-trigger="load"
+            hx-swap="outerHTML"
+        >
+        </div>
+        
+
+        <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    </body>
+</html>

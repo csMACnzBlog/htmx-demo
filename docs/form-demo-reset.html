@@ -1,0 +1,29 @@
+<form id="mainform">
+    <div class="grid">
+        <label>
+            Name
+            <input type="text">
+        </label>
+        <label>
+            Phone
+            <input type="text">
+        </label>
+    </div>
+    <div id="items">
+        <div
+            hx-get="form-demo-add.html"
+            hx-trigger="load"
+            hx-swap="outerHTML"
+        >
+        </div>
+    </div>
+    <button hx-get="form-demo-add.html" hx-swap="beforeend" hx-target="#items">
+        Add
+    </button>
+    <input
+        type="submit"
+        hx-get="form-demo-submitted.html"
+        hx-target="#mainform"
+        hx-swap="outerHTML"
+    />
+</form>

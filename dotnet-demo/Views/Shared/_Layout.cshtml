@@ -1,42 +1,45 @@
-﻿<!DOCTYPE html>
+﻿@addTagHelper *, Htmx.TagHelpers
+
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - dotnet_demo</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@picocss/pico@1/css/pico.classless.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
+
 <body>
     <header>
-        <nav class="navbar">
-            <div class="">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">dotnet_demo</a>
-                <div class="">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        <hgroup>
+        <h1><a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HTMX dotnet Demo</a></h1>
+        <h2>A demo of <code>HTMX</code> using dotnet as the server.</h2>
+        </hgroup>
+
+        <nav>
+            <ul>
+                <li>
+                    <a hx-get="@Url.Action("Index", "Home")" hx-target="main" hx-swap="innerHTML" hx-push-url="true" role="button" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                </li>
+                <li>
+                    <a hx-get="@Url.Action("Privacy", "Home")" hx-target="main" hx-swap="innerHTML" hx-push-url="true" role="button" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </li>
+            </ul>
         </nav>
     </header>
-    <div class="">
-        <main role="main" class="">
-            @RenderBody()
-        </main>
-    </div>
+    <main role="main">
+        @RenderBody()
+    </main>
 
-    <footer class="">
-        <div class="">
-            &copy; 2023 - dotnet_demo - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+    <footer>
+        <small>
+            &copy; 2023 - dotnet_demo - <a hx-get="@Url.Action("Privacy", "Home")" hx-target="main" hx-swap="innerHTML" hx-push-url="true" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </small>
     </footer>
     <script src="https://unpkg.com/htmx.org@1.9.6"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

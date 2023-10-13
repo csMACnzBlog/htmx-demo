@@ -8,3 +8,10 @@ Tools used:
 
 * HTMX - https://htmx.org/
 * Pico CSS - https://picocss.com/
+* https://github.com/khalidabuhakmeh/Htmx.Net (for dotnet app)
+
+There is a dotnet app in here as well with more sophisticated serverside iteraction flows.
+
+This was built using `dotnet new mvc` in dotnet 7 and stripping out jquery, bootstrap and css, to replace it with HTMX and Pico CSS.
+
+To dev/test use the command `dotnet watch run` from the dotnet-demo directory.

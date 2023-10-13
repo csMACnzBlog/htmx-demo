@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using dotnet_demo.Models;
+using Htmx;
 
 namespace dotnet_demo.Controllers;
 
@@ -15,11 +16,24 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        
+        if (Request.IsHtmx())
+        {
+            // When we respond to HTMX
+            return PartialView();
+        }
+
         return View();
     }
 
     public IActionResult Privacy()
     {
+        if (Request.IsHtmx())
+        {
+            // When we respond to HTMX
+            return PartialView();
+        }
+
         return View();
     }
 

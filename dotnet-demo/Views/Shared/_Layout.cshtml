@@ -21,10 +21,13 @@
         <nav>
             <ul>
                 <li>
-                    <a hx-get="@Url.Action("Index", "Home")" hx-target="main" hx-swap="innerHTML" hx-push-url="true" role="button" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    <a hx-get="@Url.Action("Index", "Home")" hx-target="main" hx-swap="innerHTML" hx-push-url="true" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                 </li>
                 <li>
-                    <a hx-get="@Url.Action("Privacy", "Home")" hx-target="main" hx-swap="innerHTML" hx-push-url="true" role="button" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    <a hx-get="@Url.Action("Privacy", "Home")" hx-target="main" hx-swap="innerHTML" hx-push-url="true" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </li>
+                <li>
+                    <a hx-get="@Url.Action("Index", "Contacts")" hx-target="main" hx-swap="innerHTML" hx-push-url="true" asp-area="" asp-controller="Contacts" asp-action="Index">Contacts</a>
                 </li>
             </ul>
         </nav>

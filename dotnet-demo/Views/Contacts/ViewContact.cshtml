@@ -1,8 +1,10 @@
-﻿@{
+﻿@model ContactViewModel
+@{
     ViewData["Title"] = "View Contact";
 }
 
 <section class="text-center">
     <h1 class="display-4">View Contact</h1>
     <p>This is the contact view screen</a>.</p>
+    <p>@Model.Contact.Id @Model.Contact.FirstName @Model.Contact.LastName</p>
 </section>

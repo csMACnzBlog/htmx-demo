@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using dotnet_demo.Models;
 using Htmx;
+using dotnet_demo.Data;
 
 namespace dotnet_demo.Controllers;
 
@@ -14,25 +15,32 @@ public class ContactsController : Controller
         _logger = logger;
     }
 
-    public IActionResult Index()
+    public IActionResult List()
     {
+        var contacts = Contacts.LoadContacts()
+            // .Skip(10000)
+            // .Where(c => c.LastName.StartsWith("ZZE"))
+            .Take(10);
+        var model = new ContactsViewModel(contacts);
         if (Request.IsHtmx())
         {
             // When we respond to HTMX
-            return PartialView();
+            return PartialView(model);
         }
 
-        return View();
+        return View(model);
     }
 
-    public IActionResult ViewContact()
+    public IActionResult ViewContact([FromRoute] int id)
     {
-        return View();
+        var model = new ContactViewModel(Contacts.LoadContact(id));
+        return View(model);
     }
 
-    public IActionResult EditContact()
+    public IActionResult EditContact([FromRoute] int id)
     {
-        return View();
+        var model = new ContactViewModel(Contacts.LoadContact(id));
+        return View(model);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

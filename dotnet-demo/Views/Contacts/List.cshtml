@@ -1,8 +1,13 @@
-﻿@{
+﻿@model ContactsViewModel
+@{
     ViewData["Title"] = "Contacts";
 }
 
 <section class="text-center">
     <h1 class="display-4">Contacts</h1>
     <p>A contacts table goes here</a>.</p>
+    <ul>
+    @foreach (var x in Model.Contacts)
+    {<li>@x.Id @x.FirstName @x.LastName</li>}
+    </ul>
 </section>

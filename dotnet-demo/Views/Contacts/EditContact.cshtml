@@ -1,8 +1,10 @@
-﻿@{
+﻿@model ContactViewModel
+@{
     ViewData["Title"] = "Edit Contact";
 }
 
 <section class="text-center">
     <h1 class="display-4">Edit Contact</h1>
     <p>This is the contact edit screen</a>.</p>
+    <p>@Model.Contact.Id @Model.Contact.FirstName @Model.Contact.LastName</p>
 </section>

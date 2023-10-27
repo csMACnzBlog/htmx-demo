@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - dotnet_demo</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@picocss/pico@1/css/pico.classless.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@picocss/pico@1/css/pico.classless.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 
@@ -27,7 +27,7 @@
                     <a hx-get="@Url.Action("Privacy", "Home")" hx-target="main" hx-swap="innerHTML" hx-push-url="true" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                 </li>
                 <li>
-                    <a hx-get="@Url.Action("Index", "Contacts")" hx-target="main" hx-swap="innerHTML" hx-push-url="true" asp-area="" asp-controller="Contacts" asp-action="Index">Contacts</a>
+                    <a hx-get="@Url.Action("List", "Contacts")" hx-target="main" hx-swap="innerHTML" hx-push-url="true" asp-area="" asp-controller="Contacts" asp-action="Index">Contacts</a>
                 </li>
             </ul>
         </nav>

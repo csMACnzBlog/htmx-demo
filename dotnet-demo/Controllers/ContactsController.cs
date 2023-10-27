@@ -15,17 +15,29 @@ public class ContactsController : Controller
         _logger = logger;
     }
 
-    public IActionResult List()
+    public IActionResult List([FromQuery] string? q = null, [FromQuery] int page = 0)
     {
-        var contacts = Contacts.LoadContacts()
-            // .Skip(10000)
-            // .Where(c => c.LastName.StartsWith("ZZE"))
-            .Take(10);
-        var model = new ContactsViewModel(contacts);
+        var contacts = Contacts.LoadContacts();
+
+        if (!string.IsNullOrEmpty(q))
+        {
+            contacts = contacts.Where(c => c.LastName.StartsWith(q.ToUpperInvariant()));
+        }
+
+        contacts = contacts.Skip(page * 10).Take(10);
+
+        var model = new ContactsViewModel(contacts.ToArray(), Query: q, NextPage: page + 1);
         if (Request.IsHtmx())
         {
-            // When we respond to HTMX
-            return PartialView(model);
+            if (Request?.Headers.TryGetValue("HX-Trigger", out var input) ?? false && (input == "search" || input == "nextPage"))
+            {
+                return PartialView("ContactItems", model);
+            }
+            else
+            {
+                // When we respond to HTMX
+                return PartialView(model);
+            }
         }
 
         return View(model);

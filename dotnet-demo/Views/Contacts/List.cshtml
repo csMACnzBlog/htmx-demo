@@ -6,8 +6,19 @@
 <section class="text-center">
     <h1 class="display-4">Contacts</h1>
     <p>A contacts table goes here</a>.</p>
-    <ul>
-    @foreach (var x in Model.Contacts)
-    {<li>@x.Id @x.FirstName @x.LastName</li>}
+    <input
+        id="search"
+        type="search"
+        name="q"
+        value="@Model.Query"
+        placeholder="Search..."
+        hx-get="@Url.Action("List", "Contacts")"
+        hx-trigger="keyup changed delay:500ms"
+        hx-target="#contacts"
+        hx-swap="innerHTML"
+        hx-push-url="true"
+    />
+    <ul id="contacts">
+        <partial name="ContactItems.cshtml" />
     </ul>
 </section>

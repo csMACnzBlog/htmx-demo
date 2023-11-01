@@ -23,12 +23,21 @@ public class ContactsController : Controller
         {
             contacts = contacts.Where(c => c.LastName.StartsWith(q.ToUpperInvariant()));
         }
-
+        var resultCount = contacts.Count();
         contacts = contacts.Skip(page * 10).Take(10);
 
-        var model = new ContactsViewModel(contacts.ToArray(), Query: q, NextPage: page + 1);
+        var outOfBandSwap = Request.IsHtmx();
+        var model = new ContactsViewModel(
+            Contacts: contacts.ToArray(),
+            ContactResultCount: new ContactResultCountModel(resultCount),
+            Query: q,
+            NextPage: page + 1,
+            OutofBandSwap: outOfBandSwap);
         if (Request.IsHtmx())
         {
+            if(model.NextPage == 1){
+                Response.Headers.Add("HX-Trigger", "contactCountChanged");
+            }
             if (Request?.Headers.TryGetValue("HX-Trigger", out var input) ?? false && (input == "search" || input == "nextPage"))
             {
                 return PartialView("ContactItems", model);
@@ -41,6 +50,19 @@ public class ContactsController : Controller
         }
 
         return View(model);
+    }
+
+    public IActionResult ListCount([FromQuery] string? q = null)
+    {
+        var contacts = Contacts.LoadContacts();
+
+        if (!string.IsNullOrEmpty(q))
+        {
+            contacts = contacts.Where(c => c.LastName.StartsWith(q.ToUpperInvariant()));
+        }
+        var resultCount = contacts.Count();
+        var model = new ContactResultCountModel(Count: resultCount);
+        return PartialView("ContactCount", model);
     }
 
     public IActionResult ViewContact([FromRoute] int id)

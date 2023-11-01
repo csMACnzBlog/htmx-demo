@@ -1,11 +1,17 @@
 @model ContactsViewModel
+@if (Model.NextPage == 1 && Model.OutofBandSwap)
+{
+<td id="resultCountB" hx-swap-oob="true">
+    <partial name="ContactCount.cshtml" model="@Model.ContactResultCount" />
+</td>
+}
 @foreach (var x in Model.Contacts)
 {
-    <li>@x.Id @x.FirstName @x.LastName</li>
+<li>@x.Id @x.FirstName @x.LastName</li>
 }
 @if (Model.Contacts.Count > 0)
 {
-    <div id="nextPage" hx-get="@Url.Action("List", "Contacts", new { q = Model.Query, page = Model.NextPage })"
-        hx-trigger="revealed" hx-swap="outerHTML">
-    </div>
+<div id="nextPage" hx-get="@Url.Action("List", "Contacts", new { q = Model.Query, page = Model.NextPage })"
+    hx-trigger="revealed" hx-swap="outerHTML">
+</div>
 }

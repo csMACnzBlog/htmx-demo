@@ -5,7 +5,34 @@
 
 <section class="text-center">
     <h1 class="display-4">Contacts</h1>
-    <p>A contacts table goes here</a>.</p>
+    <table role="grid">
+        <thead>
+            <tr>
+                <th scope="col">Page Render Only</th>
+                <th scope="col">Out of Band</th>
+                <th scope="col">Header Event</th>
+                <th scope="col">Poll</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td id="resultCountA">
+                    <partial name="ContactCount.cshtml" model="@Model.ContactResultCount" />
+                </td>
+                <td id="resultCountB"></td>
+                <td id="resultCountC"
+                    hx-trigger="load, contactCountChanged from:body"
+                    hx-get="@Url.Action("ListCount", "Contacts")"
+                    hx-include="[name='q']"
+                ></td>
+                <td id="resultCountD"
+                    hx-trigger="load, every 2s"
+                    hx-get="@Url.Action("ListCount", "Contacts")"
+                    hx-include="[name='q']"
+                ></td>
+            </tr>
+        </tbody>
+    </table>
     <input
         id="search"
         type="search"

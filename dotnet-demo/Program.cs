@@ -21,6 +21,11 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+    name: "contacts",
+    pattern: "contacts/count",
+    defaults: new { controller = "Contacts", action = "ListCount" });
+
+app.MapControllerRoute(
     name: "editcontact",
     pattern: "contacts/{id}/edit",
     defaults: new { controller = "Contacts", action = "EditContact" });

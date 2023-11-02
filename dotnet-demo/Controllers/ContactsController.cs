@@ -34,7 +34,7 @@ public class ContactsController : Controller
             Query: q,
             NextPage: page + 1,
             OutofBandSwap: outOfBandSwap);
-        if (Request.IsHtmx())
+        if (Request.IsHtmx() && !Request.IsHtmxBoosted())
         {
             if (model.NextPage == 1)
             {

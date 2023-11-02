@@ -18,7 +18,7 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         
-        if (Request.IsHtmx())
+        if (Request.IsHtmx() && !Request.IsHtmxBoosted())
         {
             // When we respond to HTMX
             return PartialView();
@@ -30,7 +30,7 @@ public class HomeController : Controller
     [Route("/Privacy")]
     public IActionResult Privacy()
     {
-        if (Request.IsHtmx())
+        if (Request.IsHtmx() && !Request.IsHtmxBoosted())
         {
             // When we respond to HTMX
             return PartialView();

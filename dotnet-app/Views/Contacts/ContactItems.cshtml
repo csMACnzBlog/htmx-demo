@@ -1,0 +1,28 @@
+@model ContactsViewModel
+@foreach (var x in Model.Contacts)
+{
+    <tr>
+      <th scope="row">@x.Id</th>
+      <td>@x.FirstName</td>
+      <td>@x.LastName</td>
+      <td>
+        <a href="@Url.Action("ViewContact", new { Id = @x.Id })">View</a>
+        <a href="@Url.Action("EditContact", new { Id = @x.Id })">Edit</a>
+      </td>
+    </tr>
+}
+@if (Model.PreviousPage is not null || Model.NextPage is not null)
+{
+    <tr>
+        <td colspan="4">
+            @if (Model.PreviousPage is not null)
+            {
+                <a href="@Url.Action("List", "Contacts", new { q = Model.Query, page = Model.PreviousPage })">Previous</a>
+            }
+            @if (Model.NextPage is not null)
+            {
+                <a href="@Url.Action("List", "Contacts", new { q = Model.Query, page = Model.NextPage })">Next</a>
+            }
+        </td>
+    </tr>
+}

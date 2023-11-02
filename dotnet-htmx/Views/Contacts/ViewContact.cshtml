@@ -1,0 +1,13 @@
+﻿@model ContactViewModel
+@{
+    ViewData["Title"] = "View Contact";
+}
+
+<section class="text-center">
+    <h1 class="display-4">View Contact</h1>
+    <p>This is the contact view screen</a>. <a href="@Url.Action("EditContact", new { Id = @Model.Contact.Id })">Edit</a></p>
+    <ul>
+        <li>Id: @Model.Contact.Id</li>
+        <li>Name: @Model.Contact.FirstName @Model.Contact.LastName</li>
+    </ul>
+</section>

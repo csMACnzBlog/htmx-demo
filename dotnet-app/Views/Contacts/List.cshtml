@@ -1,0 +1,32 @@
+﻿@model ContactsViewModel
+@{
+    ViewData["Title"] = "Contacts";
+}
+
+<section class="text-center">
+    <h1 class="display-4">Contacts</h1>
+    <partial name="ContactCount.cshtml" model="@Model.ContactResultCount" />
+    <form action="@Url.Action("List", "Contacts")">
+        <input
+            id="search"
+            type="search"
+            name="q"
+            value="@Model.Query"
+            placeholder="Search..."
+        />
+    </form>
+    <table id="contacts">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <partial name="ContactItems.cshtml" />
+        </tbody>
+    </table>
+    
+</section>

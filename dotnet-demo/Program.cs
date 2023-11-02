@@ -20,28 +20,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "contacts",
-    pattern: "contacts/count",
-    defaults: new { controller = "Contacts", action = "ListCount" });
-
-app.MapControllerRoute(
-    name: "editcontact",
-    pattern: "contacts/{id}/edit",
-    defaults: new { controller = "Contacts", action = "EditContact" });
-
-app.MapControllerRoute(
-    name: "viewcontact",
-    pattern: "contacts/{id}",
-    defaults: new { controller = "Contacts", action = "ViewContact" });
-
-app.MapControllerRoute(
-    name: "contacts",
-    pattern: "contacts",
-    defaults: new { controller = "Contacts", action = "List" });
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllers();
 
 app.Run();

@@ -6,5 +6,16 @@
 <section class="text-center">
     <h1 class="display-4">Edit Contact</h1>
     <p>This is the contact edit screen</a>.</p>
-    <p>@Model.Contact.Id @Model.Contact.FirstName @Model.Contact.LastName</p>
+    <form action="/contacts/@Model.Contact.Id/edit" method="POST">
+        <input type="hidden" id="Id"  name="Id" value="@Model.Contact.Id" />
+
+        <label for="FirstName">First Name</label>
+        <input type="text" id="FirstName" name="FirstName" value="@Model.Contact.FirstName" placeholder="First" />
+
+        
+        <label for="LastName">Last Name</label>
+        <input type="text" id="LastName" name="LastName" value="@Model.Contact.LastName" placeholder="Last" />
+        
+        <input type="submit" value="Submit"/>
+    </form>
 </section>

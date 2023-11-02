@@ -41,11 +41,23 @@
         placeholder="Search..."
         hx-get="@Url.Action("List", "Contacts")"
         hx-trigger="keyup changed delay:500ms"
-        hx-target="#contacts"
+        hx-target="#contacts > tbody"
         hx-swap="innerHTML"
         hx-push-url="true"
+        hx-indicator="#spinner"
     />
-    <ul id="contacts">
-        <partial name="ContactItems.cshtml" />
-    </ul>
+    <progress id="spinner" class="htmx-indicator"></progress>
+    <table id="contacts">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <partial name="ContactItems.cshtml" />
+        </tbody>
+    </table>
 </section>

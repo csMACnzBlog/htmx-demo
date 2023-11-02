@@ -1,11 +1,11 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using dotnet_demo.Models;
 using Htmx;
 using dotnet_demo.Data;
 
 namespace dotnet_demo.Controllers;
 
+[Route("/contacts")]
 public class ContactsController : Controller
 {
     private readonly ILogger<ContactsController> _logger;
@@ -15,6 +15,7 @@ public class ContactsController : Controller
         _logger = logger;
     }
 
+    [Route("")]
     public IActionResult List([FromQuery] string? q = null, [FromQuery] int page = 0)
     {
         var contacts = Contacts.LoadContacts();
@@ -35,7 +36,8 @@ public class ContactsController : Controller
             OutofBandSwap: outOfBandSwap);
         if (Request.IsHtmx())
         {
-            if(model.NextPage == 1){
+            if (model.NextPage == 1)
+            {
                 Response.Headers.Add("HX-Trigger", "contactCountChanged");
             }
             if (Request?.Headers.TryGetValue("HX-Trigger", out var input) ?? false && (input == "search" || input == "nextPage"))
@@ -52,6 +54,7 @@ public class ContactsController : Controller
         return View(model);
     }
 
+    [Route("count")]
     public IActionResult ListCount([FromQuery] string? q = null)
     {
         var contacts = Contacts.LoadContacts();
@@ -65,21 +68,24 @@ public class ContactsController : Controller
         return PartialView("ContactCount", model);
     }
 
+    [Route("{id}")]
     public IActionResult ViewContact([FromRoute] int id)
     {
         var model = new ContactViewModel(Contacts.LoadContact(id));
         return View(model);
     }
 
+    [HttpGet, Route("{id}/edit")]
     public IActionResult EditContact([FromRoute] int id)
     {
         var model = new ContactViewModel(Contacts.LoadContact(id));
         return View(model);
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    [HttpPost, HttpPut, Route("{id}/edit")]
+    public IActionResult EditContact([FromRoute] int id, [FromForm] ContactEditModel model)
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        var existingContact = Contacts.LoadContact(id);
+        return RedirectToAction("ViewContact", new { Id = id });
     }
 }

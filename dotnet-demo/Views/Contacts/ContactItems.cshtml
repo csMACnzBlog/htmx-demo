@@ -1,17 +1,32 @@
 @model ContactsViewModel
+@foreach (var x in Model.Contacts)
+{
+    <tr>
+      <th scope="row">@x.Id</th>
+      <td>@x.FirstName</td>
+      <td>@x.LastName</td>
+      <td>
+        <a href="@Url.Action("ViewContact", new { Id = @x.Id })">View</a>
+        <a href="@Url.Action("EditContact", new { Id = @x.Id })">Edit</a>
+      </td>
+    </tr>
+}
+@if (Model.Contacts.Count > 0)
+{
+    <tr id="nextPage"
+        hx-get="@Url.Action("List", "Contacts", new { q = Model.Query, page = Model.NextPage })"
+        hx-trigger="revealed"
+        hx-swap="outerHTML"
+        hx-indicator="#nextPageSpinner">
+        <td colspan="4">
+            <progress id="nextPageSpinner" class="htmx-indicator"></progress>
+        </td>
+    </tr>
+}
+
 @if (Model.NextPage == 1 && Model.OutofBandSwap)
 {
 <td id="resultCountB" hx-swap-oob="true">
     <partial name="ContactCount.cshtml" model="@Model.ContactResultCount" />
 </td>
-}
-@foreach (var x in Model.Contacts)
-{
-<li>@x.Id @x.FirstName @x.LastName</li>
-}
-@if (Model.Contacts.Count > 0)
-{
-<div id="nextPage" hx-get="@Url.Action("List", "Contacts", new { q = Model.Query, page = Model.NextPage })"
-    hx-trigger="revealed" hx-swap="outerHTML">
-</div>
 }

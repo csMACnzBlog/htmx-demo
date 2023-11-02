@@ -1,21 +1,49 @@
-namespace dotnet_demo.Data;
+namespace backend;
 public static class Contacts
 {
-    private static readonly Dictionary<int, Contact> EditedContacts = new();
+    private static readonly Dictionary<int, Contact?> EditedContacts = new();
 
-    public static Contact LoadContact(int id)
+    public static Contact? GetContactById(int id)
     {
-        if (EditedContacts.ContainsKey(id))
+        if (EditedContacts.TryGetValue(id, out var contact))
         {
-            return EditedContacts[id];
+            return contact;
         }
         else
         {
-            return LoadContacts().Skip(id - 1).Take(1).Single();
+            return GenerateContacts().Skip(id - 1).Take(1).Single();
         }
     }
 
-    public static IEnumerable<Contact> LoadContacts()
+    public static Contact[] GetContacts(string? surnameStartsWith, int pageSize = 10, int pageNumber = 0)
+    {
+        return LoadContacts(surnameStartsWith)
+            .Skip(pageNumber * pageSize)
+            .Take(10)
+            .ToArray();
+
+    }
+
+    public static int GetContactsCount(string? surnameStartsWith)
+    {
+        return LoadContacts(surnameStartsWith).Count();
+    }
+
+    private static IEnumerable<Contact> LoadContacts(string? surnameStartsWith)
+    {
+        IEnumerable<Contact> contacts = GenerateContacts()
+                .Where(c=>c != null)!;
+
+        if (!string.IsNullOrEmpty(surnameStartsWith))
+        {
+            contacts = contacts
+                .Where(c => c.LastName.StartsWith(surnameStartsWith.ToUpperInvariant()));
+        }
+
+        return contacts;
+    }
+
+    private static IEnumerable<Contact?> GenerateContacts()
     {
         int id = 0;
         string name = "AAA@"; // @ comes before A
@@ -23,9 +51,9 @@ public static class Contacts
         {
             id++;
             name = NextName(name);
-            if (EditedContacts.ContainsKey(id))
+            if (EditedContacts.TryGetValue(id, out var contact))
             {
-                yield return EditedContacts[id];
+                yield return contact;
             }
             else
             {

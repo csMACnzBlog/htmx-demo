@@ -14,7 +14,7 @@
 @if (Model.PreviousPage is not null || Model.NextPage is not null)
 {
     <tr>
-        <td colspan="4">
+        <td colspan="4" style="text-align: center;">
             @if (Model.PreviousPage is not null)
             {
                 <a href="@Url.Action("List", "Contacts", new { q = Model.Query, page = Model.PreviousPage })">Previous</a>

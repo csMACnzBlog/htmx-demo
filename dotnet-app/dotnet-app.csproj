@@ -7,8 +7,9 @@
     <RootNamespace>dotnet_demo</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <!-- <PackageReference Include="Htmx" Version="1.5.0" /> -->
+  <ItemGroup><!-- <PackageReference Include="Htmx" Version="1.5.0" /> -->
+  
+    <ProjectReference Include="..\backend\backend.csproj" />
   </ItemGroup>
 
 </Project>

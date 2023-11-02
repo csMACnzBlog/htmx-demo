@@ -1,3 +1,3 @@
-namespace dotnet_demo.Data;
+namespace backend;
 
 public record class Contact(long Id, string FirstName, string LastName) { }

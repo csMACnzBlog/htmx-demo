@@ -50,10 +50,7 @@
             placeholder="Search..."
             hx-get="@Url.Action("List", "Contacts")"
             hx-trigger="keyup changed delay:500ms"
-            hx-target="#contacts > tbody"
-            hx-swap="innerHTML"
-            hx-push-url="true"
-            hx-indicator="#spinner"
+            hx-sync="closest form:abort"
         />
         <noscript>
             <button type="submit">Submit</button>

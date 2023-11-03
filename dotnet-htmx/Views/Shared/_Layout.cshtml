@@ -13,22 +13,27 @@
 </head>
 
 <body hx-boost="true">
-    <header>
+    <header class="hero" data-theme=dark>
         <hgroup>
-        <h1><a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HTMX dotnet Demo</a></h1>
+        <h1><a class="navbar-brand" href="@Url.Action("Index", "Home")">HTMX dotnet Demo</a></h1>
         <h2>A demo of <code>HTMX</code> using dotnet as the server.</h2>
         </hgroup>
 
         <nav>
-            <ul>
+            <ul
+                hx-target="main"
+                hx-swap="innerHTML"
+                hx-push-url="true"
+                hx-sync="this:queue last"
+            >
                 <li>
-                    <a hx-get="@Url.Action("Index", "Home")" hx-target="main" hx-swap="innerHTML" hx-push-url="true" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    <a hx-get="@Url.Action("Index", "Home")" href="@Url.Action("Index", "Home")">Home</a>
                 </li>
                 <li>
-                    <a hx-get="@Url.Action("Privacy", "Home")" hx-target="main" hx-swap="innerHTML" hx-push-url="true" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    <a hx-get="@Url.Action("Privacy", "Home")" href="@Url.Action("Privacy", "Home")">Privacy</a>
                 </li>
                 <li>
-                    <a hx-get="@Url.Action("List", "Contacts")" hx-target="main" hx-swap="innerHTML" hx-push-url="true" asp-area="" asp-controller="Contacts" asp-action="Index">Contacts</a>
+                    <a hx-get="@Url.Action("List", "Contacts")" href="@Url.Action("List", "Contacts")">Contacts</a>
                 </li>
             </ul>
         </nav>
@@ -39,7 +44,7 @@
 
     <footer>
         <small>
-            &copy; 2023 - dotnet_demo - <a hx-get="@Url.Action("Privacy", "Home")" hx-target="main" hx-swap="innerHTML" hx-push-url="true" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2023 - dotnet_demo - <a href="@Url.Action("Privacy", "Home")">Privacy</a>
         </small>
     </footer>
     <script src="https://unpkg.com/htmx.org@1.9.6" integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni" crossorigin="anonymous"></script>

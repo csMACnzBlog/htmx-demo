@@ -11,15 +11,32 @@
       </td>
     </tr>
 }
-@if (Model.Contacts.Count > 0)
+@if (Model.NextPage is not null)
 {
     <tr id="nextPage"
         hx-get="@Url.Action("List", "Contacts", new { q = Model.Query, page = Model.NextPage })"
         hx-trigger="revealed"
         hx-swap="outerHTML"
         hx-indicator="#nextPageSpinner">
-        <td colspan="4">
+        <td colspan="4" style="text-align: center;">
             <progress id="nextPageSpinner" class="htmx-indicator"></progress>
+            <noscript>
+                @if (Model.PreviousPage is not null)
+                {
+                    <a href="@Url.Action("List", "Contacts", new { q = Model.Query, page = Model.PreviousPage })">Previous</a>
+                }
+                <a href="@Url.Action("List", "Contacts", new { q = Model.Query, page = Model.NextPage })">Next</a>
+            <noscript>
+        </td>
+    </tr>
+}
+else if (Model.PreviousPage is not null)
+{
+    <tr>
+        <td colspan="4" style="text-align: center;">
+            <noscript>
+                <a href="@Url.Action("List", "Contacts", new { q = Model.Query, page = Model.PreviousPage })">Previous</a>
+            <noscript>
         </td>
     </tr>
 }

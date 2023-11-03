@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using backend;
-using dotnet_demo.Models
+using dotnet_demo.Models;
 using Htmx;
 
 namespace dotnet_demo.Controllers;
@@ -23,10 +23,11 @@ public class ContactsController : Controller
 
         var outOfBandSwap = Request.IsHtmx();
         var model = new ContactsViewModel(
-            Contacts: contacts.ToArray(),
+            Contacts: contacts,
             ContactResultCount: new ContactResultCountModel(resultCount),
             Query: q,
-            NextPage: page + 1,
+            PreviousPage: page > 0 ? page - 1 : null,
+            NextPage: contacts.Length > 0 ? page + 1 : null,
             OutofBandSwap: outOfBandSwap);
         if (Request.IsHtmx() && !Request.IsHtmxBoosted())
         {
@@ -34,7 +35,8 @@ public class ContactsController : Controller
             {
                 Response.Headers.Add("HX-Trigger", "contactCountChanged");
             }
-            if (Request?.Headers.TryGetValue("HX-Trigger", out var input) ?? false && (input == "search" || input == "nextPage"))
+            if (Request?.Headers.TryGetValue("HX-Trigger", out var trigger) ?? false
+                && (trigger == "search" || trigger == "nextPage" || trigger == "searchForm"))
             {
                 return PartialView("ContactItems", model);
             }

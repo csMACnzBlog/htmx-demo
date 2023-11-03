@@ -8,3 +8,12 @@
 .htmx-request.htmx-indicator{
     opacity:1
 }
+
+/* Header */
+.hero {
+    background-color: #394046;
+  }
+
+body>footer, body>header, body>main {
+    padding: calc(2rem)
+}

@@ -33,19 +33,32 @@
             </tr>
         </tbody>
     </table>
-    <input
-        id="search"
-        type="search"
-        name="q"
-        value="@Model.Query"
-        placeholder="Search..."
+    <form
+        id="searchForm"
+        action="@Url.Action("List", "Contacts")"
         hx-get="@Url.Action("List", "Contacts")"
-        hx-trigger="keyup changed delay:500ms"
+        hx-trigger="submit"
         hx-target="#contacts > tbody"
         hx-swap="innerHTML"
         hx-push-url="true"
-        hx-indicator="#spinner"
-    />
+        hx-indicator="#spinner">
+        <input
+            id="search"
+            type="search"
+            name="q"
+            value="@Model.Query"
+            placeholder="Search..."
+            hx-get="@Url.Action("List", "Contacts")"
+            hx-trigger="keyup changed delay:500ms"
+            hx-target="#contacts > tbody"
+            hx-swap="innerHTML"
+            hx-push-url="true"
+            hx-indicator="#spinner"
+        />
+        <noscript>
+            <button type="submit">Submit</button>
+        </noscript>
+    </form>
     <progress id="spinner" class="htmx-indicator"></progress>
     <table id="contacts">
         <thead>

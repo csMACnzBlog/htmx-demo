@@ -1,3 +1,3 @@
 namespace backend;
 
-public record class Contact(long Id, string FirstName, string LastName) { }
+public record class Contact(int Id, string FirstName, string LastName) { }

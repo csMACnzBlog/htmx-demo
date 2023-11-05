@@ -29,10 +29,48 @@ public static class Contacts
         return LoadContacts(surnameStartsWith).Count();
     }
 
+    public static ContactResult AddContact(Contact contact)
+    {
+        var nextId = Math.Max(26 * 26 * 26 * 26, EditedContacts.Keys.Max() + 1);
+
+        if (EditedContacts.ContainsKey(nextId)) throw new Exception("Developer Math Error");
+
+        var newContact = contact with { Id = nextId };
+
+        var validationResult = Validate(newContact);
+        if (validationResult == ContactResult.Success)
+        {
+            EditedContacts[nextId] = newContact;
+        }
+
+        return validationResult;
+    }
+
+    public static ContactResult UpdateContact(Contact contact)
+    {
+        if (!EditedContacts.ContainsKey(contact.Id))
+        {
+            return ContactResult.Error((nameof(Contact.Id), "Contact Not Found"));
+        }
+
+        var validationResult = Validate(contact);
+        if (validationResult == ContactResult.Success)
+        {
+            EditedContacts[contact.Id] = contact;
+        }
+
+        return validationResult;
+    }
+
+    private static ContactResult Validate(Contact contact)
+    {
+        return ContactResult.Success;
+    }
+
     private static IEnumerable<Contact> LoadContacts(string? surnameStartsWith)
     {
         IEnumerable<Contact> contacts = GenerateContacts()
-                .Where(c=>c != null)!;
+                .Where(c => c != null)!;
 
         if (!string.IsNullOrEmpty(surnameStartsWith))
         {
@@ -58,6 +96,13 @@ public static class Contacts
             else
             {
                 yield return new Contact(id, GenerateName(id), name);
+            }
+        }
+        foreach (var kvp in EditedContacts.Where(x => x.Key >= id))
+        {
+            if (kvp.Value is not null)
+            {
+                yield return kvp.Value;
             }
         }
     }

@@ -43,6 +43,35 @@ public class ContactsController : Controller
         return View(model);
     }
 
+    [HttpGet, Route("add")]
+    public IActionResult AddContact([FromRoute] int id)
+    {
+        var contact = Contacts.GetContactById(id);
+        if (contact is null)
+        {
+            return NotFound();
+        }
+
+        var model = new ContactViewModel(contact);
+        return View("EditContact", model);
+    }
+
+    [HttpPost, Route("add")]
+    public IActionResult AddContact([FromRoute] int id, [FromForm] ContactAddModel model)
+    {
+        var newContact = new Contact(-1, model.FirstName, model.LastName);
+
+        var result = Contacts.AddContact(newContact);
+
+        if (result != ContactResult.Success)
+        {
+            model = model with { Errors = result.Errors};
+            return View("AddContact", model);
+        }
+
+        return RedirectToAction("ViewContact", new { Id = id });
+    }
+
     [HttpGet, Route("{id}/edit")]
     public IActionResult EditContact([FromRoute] int id)
     {
@@ -64,8 +93,15 @@ public class ContactsController : Controller
         {
             return NotFound();
         }
+        contact = contact with { FirstName = model.FirstName, LastName = model.LastName };
 
-        // TODO: save
+        var result = Contacts.UpdateContact(contact);
+
+        if (result != ContactResult.Success)
+        {
+            model = model with { Errors = result.Errors};
+            return View("AddContact", model);
+        }
 
         return RedirectToAction("ViewContact", new { Id = id });
     }

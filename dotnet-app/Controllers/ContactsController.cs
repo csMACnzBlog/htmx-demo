@@ -44,32 +44,25 @@ public class ContactsController : Controller
     }
 
     [HttpGet, Route("add")]
-    public IActionResult AddContact([FromRoute] int id)
+    public IActionResult AddContact()
     {
-        var contact = Contacts.GetContactById(id);
-        if (contact is null)
-        {
-            return NotFound();
-        }
-
-        var model = new ContactViewModel(contact);
-        return View("EditContact", model);
+        var model = new ContactAddModel("", "");
+        return View("AddContact", model);
     }
 
     [HttpPost, Route("add")]
-    public IActionResult AddContact([FromRoute] int id, [FromForm] ContactAddModel model)
+    public IActionResult AddContact([FromForm] ContactAddModel model)
     {
         var newContact = new Contact(-1, model.FirstName, model.LastName);
 
         var result = Contacts.AddContact(newContact);
 
-        if (result != ContactResult.Success)
+        return result switch
         {
-            model = model with { Errors = result.Errors};
-            return View("AddContact", model);
-        }
-
-        return RedirectToAction("ViewContact", new { Id = id });
+            ContactErrorResult e => View("AddContact", model with { Errors = e.Errors }),
+            ContactSuccessResult s => RedirectToAction("ViewContact", new { s.Id }),
+            _ => throw new NotSupportedException()
+        };
     }
 
     [HttpGet, Route("{id}/edit")]
@@ -81,7 +74,7 @@ public class ContactsController : Controller
             return NotFound();
         }
 
-        var model = new ContactViewModel(contact);
+        var model = new ContactEditModel(contact.Id, contact.FirstName, contact.LastName);
         return View(model);
     }
 
@@ -97,12 +90,11 @@ public class ContactsController : Controller
 
         var result = Contacts.UpdateContact(contact);
 
-        if (result != ContactResult.Success)
+        return result switch
         {
-            model = model with { Errors = result.Errors};
-            return View("AddContact", model);
-        }
-
-        return RedirectToAction("ViewContact", new { Id = id });
+            ContactErrorResult e => View("EditContact", model with { Errors = e.Errors }),
+            ContactSuccessResult s => RedirectToAction("ViewContact", new { s.Id }),
+            _ => throw new NotSupportedException()
+        };
     }
 }

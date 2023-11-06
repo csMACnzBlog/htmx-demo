@@ -5,7 +5,10 @@
 
 <section class="text-center">
     <h1 class="display-4">Contacts</h1>
+    <a role="button" href="@Url.Action("AddContact", "Contacts")">Add Contact</a>
+    <div>
     <partial name="ContactCount.cshtml" model="@Model.ContactResultCount" />
+    </div>
     <form action="@Url.Action("List", "Contacts")">
         <input
             id="search"

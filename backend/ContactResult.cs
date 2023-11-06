@@ -1,9 +1,12 @@
 namespace backend;
 
-public record class ContactResult(bool Successful, Dictionary<string, string> Errors)
-{
-    public static ContactResult Success => new(true, new());
+public interface IContactResult
+{ }
 
-    public static ContactResult Error(params (string propertyName, string errorMessage)[] Errors)
-        => new(false, Errors.ToDictionary(kvp => kvp.propertyName, kvp => kvp.errorMessage));
+public sealed record class ContactSuccessResult(int Id) : IContactResult;
+
+public sealed record class ContactErrorResult(Dictionary<string, string> Errors) : IContactResult
+{
+    public ContactErrorResult(string propertyName, string value) : this(new Dictionary<string, string> { { propertyName, value } })
+    { }
 }

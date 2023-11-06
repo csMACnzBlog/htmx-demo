@@ -1,0 +1,23 @@
+﻿@model ContactFormModel
+<label for="FirstName">First Name</label>
+@if (Model.Errors?.TryGetValue(nameof(ContactAddModel.FirstName), out var firstNameError) == true)
+{
+    <input type="text" id="FirstName" name="FirstName" value="@Model.FirstName" placeholder="First" required
+        aria-invalid="true" />
+    <small>@firstNameError</small>
+}
+else
+{
+    <input type="text" id="FirstName" name="FirstName" value="@Model.FirstName" placeholder="First" required />
+}
+<label for="LastName">Last Name</label>
+@if (Model.Errors?.TryGetValue(nameof(ContactAddModel.LastName), out var lastNameError) == true)
+{
+    <input type="text" id="FirstName" name="LastName" value="@Model.LastName" placeholder="First"
+        aria-invalid="true" required />
+    <small>@lastNameError</small>
+}
+else
+{
+    <input type="text" id="LastName" name="LastName" value="@Model.LastName" placeholder="Last" required />
+}

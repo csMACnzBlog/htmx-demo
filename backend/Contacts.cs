@@ -1,3 +1,6 @@
+using System.Globalization;
+using System.Net.Http.Headers;
+
 namespace backend;
 public static class Contacts
 {
@@ -29,42 +32,65 @@ public static class Contacts
         return LoadContacts(surnameStartsWith).Count();
     }
 
-    public static ContactResult AddContact(Contact contact)
+    public static IContactResult AddContact(Contact contact)
     {
-        var nextId = Math.Max(26 * 26 * 26 * 26, EditedContacts.Keys.Max() + 1);
+        var nextId = Math.Max(26 * 26 * 26 * 26, EditedContacts.Any() ? EditedContacts.Keys.Max() : 0) + 1;
 
         if (EditedContacts.ContainsKey(nextId)) throw new Exception("Developer Math Error");
 
         var newContact = contact with { Id = nextId };
 
         var validationResult = Validate(newContact);
-        if (validationResult == ContactResult.Success)
+        if (validationResult is null)
         {
             EditedContacts[nextId] = newContact;
+            return new ContactSuccessResult(nextId);
         }
 
         return validationResult;
     }
 
-    public static ContactResult UpdateContact(Contact contact)
+    public static IContactResult UpdateContact(Contact contact)
     {
         if (!EditedContacts.ContainsKey(contact.Id))
         {
-            return ContactResult.Error((nameof(Contact.Id), "Contact Not Found"));
+            return new ContactErrorResult(nameof(Contact.Id), "Contact Not Found");
         }
 
         var validationResult = Validate(contact);
-        if (validationResult == ContactResult.Success)
+        if (validationResult is null)
         {
             EditedContacts[contact.Id] = contact;
+            return new ContactSuccessResult(contact.Id);
         }
 
         return validationResult;
     }
 
-    private static ContactResult Validate(Contact contact)
+    private static ContactErrorResult? Validate(Contact contact)
     {
-        return ContactResult.Success;
+        var errors = new Dictionary<string, string>();
+        if (string.IsNullOrWhiteSpace(contact.FirstName))
+        {
+            errors[nameof(Contact.FirstName)] = "First Name is required";
+        }
+        else if (contact.FirstName.Contains("@"))
+        {
+            errors[nameof(Contact.FirstName)] = "First Name cannot contain an '@' symbol";
+        }
+
+        if (string.IsNullOrWhiteSpace(contact.LastName))
+        {
+            errors[nameof(Contact.LastName)] = "Last Name is required";
+        }
+        else if (contact.LastName.Length <= 2)
+        {
+            errors[nameof(Contact.LastName)] = "Last must be longer than 2 characters";
+        }
+
+        return errors.Any()
+            ? new ContactErrorResult(errors)
+            : null;
     }
 
     private static IEnumerable<Contact> LoadContacts(string? surnameStartsWith)
@@ -75,7 +101,7 @@ public static class Contacts
         if (!string.IsNullOrEmpty(surnameStartsWith))
         {
             contacts = contacts
-                .Where(c => c.LastName.StartsWith(surnameStartsWith.ToUpperInvariant()));
+                .Where(c => c.LastName.StartsWith(surnameStartsWith, StringComparison.InvariantCultureIgnoreCase));
         }
 
         return contacts;

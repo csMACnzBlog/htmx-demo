@@ -1,4 +1,4 @@
-﻿@model ContactViewModel
+﻿@model ContactAddModel
 @{
     ViewData["Title"] = "Add Contact";
 }
@@ -6,13 +6,9 @@
 <section class="text-center">
     <h1 class="display-4">Edit Contact</h1>
     <p>This is the contact edit screen</a>.</p>
-    <form action="/contacts/@Model.Contact.Id/edit" method="POST">
-        <label for="FirstName">First Name</label>
-        <input type="text" id="FirstName" name="FirstName" value="@Model.Contact.FirstName" placeholder="First" />
+    <form action="/contacts/add" method="POST">
+        <partial name="Contactform.cshtml" />
 
-        <label for="LastName">Last Name</label>
-        <input type="text" id="LastName" name="LastName" value="@Model.Contact.LastName" placeholder="Last" />
-        
-        <input type="submit" value="Submit"/>
+        <input type="submit" value="Submit" />
     </form>
 </section>

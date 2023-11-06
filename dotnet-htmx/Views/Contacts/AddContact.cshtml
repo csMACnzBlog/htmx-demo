@@ -1,0 +1,14 @@
+﻿@model ContactAddModel
+@{
+    ViewData["Title"] = "Add Contact";
+}
+
+<section class="text-center">
+    <h1 class="display-4">Edit Contact</h1>
+    <p>This is the contact edit screen</a>.</p>
+    <form action="/contacts/add" method="POST">
+        <partial name="Contactform.cshtml" />
+
+        <input type="submit" value="Submit" />
+    </form>
+</section>

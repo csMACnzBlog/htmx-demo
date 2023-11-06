@@ -4,6 +4,8 @@ using System.Net.Http.Headers;
 namespace backend;
 public static class Contacts
 {
+    private const int GeneratedContactCount = 26 * 26 * 26 * 26; // [A-Z]{4} == 26^4
+
     private static readonly Dictionary<int, Contact?> EditedContacts = new();
 
     public static Contact? GetContactById(int id)
@@ -12,10 +14,11 @@ public static class Contacts
         {
             return contact;
         }
-        else
+        if (id < GeneratedContactCount)
         {
             return GenerateContacts().Skip(id - 1).Take(1).Single();
         }
+        return null;
     }
 
     public static Contact[] GetContacts(string? surnameStartsWith, int pageSize = 10, int pageNumber = 0)
@@ -34,7 +37,7 @@ public static class Contacts
 
     public static IContactResult AddContact(Contact contact)
     {
-        var nextId = Math.Max(26 * 26 * 26 * 26, EditedContacts.Any() ? EditedContacts.Keys.Max() : 0) + 1;
+        var nextId = Math.Max(GeneratedContactCount, EditedContacts.Any() ? EditedContacts.Keys.Max() : 0) + 1;
 
         if (EditedContacts.ContainsKey(nextId)) throw new Exception("Developer Math Error");
 
@@ -54,7 +57,10 @@ public static class Contacts
     {
         if (!EditedContacts.ContainsKey(contact.Id))
         {
-            return new ContactErrorResult(nameof(Contact.Id), "Contact Not Found");
+            if (contact.Id >= GeneratedContactCount)
+            {
+                return new ContactErrorResult(nameof(Contact.Id), "Contact Not Found");
+            }
         }
 
         var validationResult = Validate(contact);
@@ -111,7 +117,7 @@ public static class Contacts
     {
         int id = 0;
         string name = "AAA@"; // @ comes before A
-        while (id < 26 * 26 * 26 * 26)
+        while (id < GeneratedContactCount)
         {
             id++;
             name = NextName(name);
